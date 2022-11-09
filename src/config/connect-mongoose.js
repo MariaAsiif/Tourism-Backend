@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const config = require('dotenv').config();
 
+
 let uri = '';
 
 if (config.NODE_ENV === 'local') {
@@ -19,14 +20,20 @@ const options = {
   /* useNewUrlParser: true, 
   useUnifiedTopology: true */
 };
-mongoose.connect(uri, options);
+
+import {i18nMongo} from 'i18n-mongo'
+mongoose.connect(uri, (err)=> {
+  app.use(i18nMongo())
+  console.log('Mongoose connected');
+});
 
 //mongoose.openUri(uri)
 
 console.log('Mongoose connecting to: ' + uri);
 
 mongoose.connection.on('connected', function () {
-  console.log('Mongoose connected');
+  
+  
 });
 mongoose.connection.on('error', function (err) {
   console.log('Mongoose connection error: ' + err);
