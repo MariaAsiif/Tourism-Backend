@@ -21,9 +21,10 @@ const options = {
   useUnifiedTopology: true */
 };
 
-import {i18nMongo} from 'i18n-mongo'
+//import {i18nMongo} from 'i18n-mongo'
+
 mongoose.connect(uri, (err)=> {
-  app.use(i18nMongo())
+  //app.use(i18nMongo())
   console.log('Mongoose connected');
 });
 
