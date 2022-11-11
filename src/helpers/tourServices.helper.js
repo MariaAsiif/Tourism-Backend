@@ -84,7 +84,7 @@ module.exports = {
 
         const tourService = await TourServices.findById(data.id);
         if(tourService == null){
-             var error = "TourServices does not exists."
+             var error = "TourService does not exists."
              return error
         }
         tourService.lastModifiedBy = data.lastModifiedBy

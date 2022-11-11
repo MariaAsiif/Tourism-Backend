@@ -26,7 +26,7 @@ module.exports = {
         console.log("getTourPlaces Model Function called")
 
         const tourPlaces = await TourPlaces.find(query.critarion)
-       
+       .populate('tourCategory', query.tourCategoryFields)
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)
@@ -81,7 +81,7 @@ module.exports = {
 
         const tourPlace = await TourPlaces.findById(data.id);
         if(tourPlace == null){
-             var error = "TourPlaces does not exists."
+             var error = "TourPlace does not exists."
              return error
         }
         tourPlace.lastModifiedBy = data.lastModifiedBy
@@ -96,7 +96,7 @@ module.exports = {
         console.log("findTourPlacesById HelperFunction is called");
         
         const tourPlace = await TourPlaces.findOne(query.critarion)
-        
+        .populate('tourCategory', query.tourCategoryFields)
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)

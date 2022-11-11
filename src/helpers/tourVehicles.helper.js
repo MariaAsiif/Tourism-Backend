@@ -84,7 +84,7 @@ module.exports = {
 
         const tourVehicle = await TourVehicles.findById(data.id);
         if(tourVehicle == null){
-             var error = "TourVehicles does not exists."
+             var error = "TourVehicle does not exists."
              return error
         }
         tourVehicle.lastModifiedBy = data.lastModifiedBy

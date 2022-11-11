@@ -12,6 +12,8 @@ const tourServiceRoutes = require('./tourService.route')
 const tourVehicleRoutes = require('./tourVehicles.route')
 const hotelRoutes = require('./hotels.route')
 const tourPlacesRoutes = require('./tourPlaces.route')
+const membershipRoutes = require('./memberships.route')
+const discountRoutes = require('./discounts.route')
 
 
 
@@ -25,6 +27,8 @@ router.use('/tourServices', tourServiceRoutes)
 router.use('/tourVehicles', tourVehicleRoutes)
 router.use('/hotels', hotelRoutes)
 router.use('/tourPlaces', tourPlacesRoutes)
+router.use('/memeberships', membershipRoutes)
+router.use('/discounts', discountRoutes)
 
 
 module.exports = router

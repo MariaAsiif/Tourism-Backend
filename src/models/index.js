@@ -9,6 +9,8 @@ module.exports = {
   tourServices: require('./tourServices.model'),
   tourVehicles: require('./tourVehicles.model'),
   hotels: require('./hotels.model'),
-  tourPlaces: require('./tourPlaces.model')
+  tourPlaces: require('./tourPlaces.model'),
+  memberships: require('./memberships.model'),
+  discounts: require('./discounts.model')
   
 }

@@ -81,9 +81,9 @@ module.exports = {
     removeTourCategories: async (data) => {
         console.log("removeTourCategories HelperFunction is called");
 
-        const tourCategories = await tourCategories.findById(data.id);
+        const tourCategories = await TourCategories.findById(data.id);
         if(tourCategories == null){
-             var error = "tourCategories does not exists."
+             var error = "TourCategories does not exists."
              return error
         }
         tourCategories.lastModifiedBy = data.lastModifiedBy
