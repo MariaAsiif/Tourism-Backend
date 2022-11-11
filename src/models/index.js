@@ -1,8 +1,7 @@
 
 module.exports = {
   users: require("./users.model"),
-  ac: require("./ac.model"), 
-  
+  ac: require("./ac.model"),  
   permissions: require('./permissions.model'),
   roles: require('./roles.model'),
   tourCategories: require('./tourCategories.model'),
@@ -11,6 +10,7 @@ module.exports = {
   hotels: require('./hotels.model'),
   tourPlaces: require('./tourPlaces.model'),
   memberships: require('./memberships.model'),
-  discounts: require('./discounts.model')
+  discounts: require('./discounts.model'),
+  tourPackeges: require('./tourPackages.model')
   
 }
