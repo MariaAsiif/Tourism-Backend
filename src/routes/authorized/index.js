@@ -28,7 +28,7 @@ router.use('/tourServices', tourServiceRoutes)
 router.use('/tourVehicles', tourVehicleRoutes)
 router.use('/hotels', hotelRoutes)
 router.use('/tourPlaces', tourPlacesRoutes)
-router.use('/memeberships', membershipRoutes)
+router.use('/memberships', membershipRoutes)
 router.use('/discounts', discountRoutes)
 router.use('/tourPackages', tourPackageRoutes)
 

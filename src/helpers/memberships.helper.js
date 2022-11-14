@@ -81,7 +81,7 @@ module.exports = {
 
         const membership = await Membership.findById(data.id);
         if(membership == null){
-             var error = "membership does not exists."
+             var error = "Membership does not exists."
              return error
         }
         membership.lastModifiedBy = data.lastModifiedBy

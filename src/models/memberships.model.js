@@ -17,6 +17,9 @@ membershipsSchema = new Schema({
     membEndDate: {
         type: Date
     },
+    nextRenewalDate: {
+        type: Date
+    },
     active: {
         type: Boolean
     },
