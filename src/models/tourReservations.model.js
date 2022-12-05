@@ -22,7 +22,7 @@ tourReservationsSchema = new Schema({
     isPaymentMade: {
         type: Boolean
     },
-    discount: {
+    customerFields: {
         type: String,
         ref: 'discounts'
     },

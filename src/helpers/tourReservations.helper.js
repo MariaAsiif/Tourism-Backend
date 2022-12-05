@@ -31,6 +31,9 @@ module.exports = {
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)
+        .populate('customer', query.customerFields)
+        .populate('tourPackages', query.tourPackagesFields)
+        .populate('discount', query.discountFields)
         .sort({ [sortProperty]: sortOrder })
         .skip(offset)
         .limit(limit);

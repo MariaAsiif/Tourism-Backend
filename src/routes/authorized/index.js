@@ -31,7 +31,7 @@ router.use('/tourPlaces', tourPlacesRoutes)
 router.use('/memberships', membershipRoutes)
 router.use('/discounts', discountRoutes)
 router.use('/tourPackages', tourPackageRoutes)
-router.use('/tourPackages', tourReservationRoutes)
+router.use('/tourReservations', tourReservationRoutes)
 
 
 module.exports = router
