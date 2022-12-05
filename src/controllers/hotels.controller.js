@@ -18,7 +18,7 @@ const promise = require('bluebird')
 //async for async tasks
 var async = require('async')
 
-const tourReservationHelper = require('../helpers/tourReservations.helper')
+const hotelHelper = require('../helpers/hotels.helper')
 
 //helper functions
 logger = require("../helpers/logger")
@@ -30,16 +30,16 @@ const constants = require("../hardCodedData").constants
 
 var pageSize = parseInt(config.PAGE_SIZE)
 
-var createTourReservation = async (req, res) => {
-    console.log('createTourReservation')
+var createHotel = async (req, res) => {
+    console.log('createHotel')
     try {
-        var tourReservationData = req.body
+        var hotelData = req.body
         
-        tourReservationData.addedby = req.token_decoded.d
+        hotelData.addedby = req.token_decoded.d
 
         
-            var result = await tourReservationHelper.createTourReservation(tourReservationData)
-            var message = "TourReservation created successfully"
+            var result = await hotelHelper.createHotel(hotelData)
+            var message = "Hotel created successfully"
             return responseHelper.success(res, result, message)
         
 
@@ -50,14 +50,14 @@ var createTourReservation = async (req, res) => {
 } //end function
 
 
-var getTourReservationsWithFullDetails = async (req, res) => {
-    console.log("getTourReservationsWithFullDetails called")
-    var tourReservationData = req.body
+var getHotelsWithFullDetails = async (req, res) => {
+    console.log("getHotelsWithFullDetails called")
+    var hotelData = req.body
 
 
     try {
 
-        var result = await tourReservationHelper.getTourReservationWithFullDetails(tourReservationData.sortproperty, tourReservationData.sortorder, tourReservationData.offset, tourReservationData.limit, tourReservationData.query)
+        var result = await hotelHelper.getHotelWithFullDetails(hotelData.sortproperty, hotelData.sortorder, hotelData.offset, hotelData.limit, hotelData.query)
 
         var message = 'Successfully loaded'
 
@@ -68,14 +68,14 @@ var getTourReservationsWithFullDetails = async (req, res) => {
     }
 }
 
-var getTourReservationsList = async (req, res) => {
-    console.log("getTourReservationsList called")
-    var tourReservationData = req.body
+var getHotelsList = async (req, res) => {
+    console.log("getHotelsList called")
+    var hotelData = req.body
 
 
     try {
 
-        var result = await tourReservationHelper.getTourReservationList(tourReservationData.sortproperty, tourReservationData.sortorder, tourReservationData.offset, tourReservationData.limit, tourReservationData.query)
+        var result = await hotelHelper.getHotelList(hotelData.sortproperty, hotelData.sortorder, hotelData.offset, hotelData.limit, hotelData.query)
 
         var message = 'Successfully loaded'
 
@@ -86,16 +86,16 @@ var getTourReservationsList = async (req, res) => {
     }
 }
 
-var updateTourReservation = async (req, res) => {
-    console.log("request received for updateTourReservation")
+var updateHotel = async (req, res) => {
+    console.log("request received for updateHotel")
 
-    var tourReservationData = req.body
+    var hotelData = req.body
     var role = req.token_decoded.r
     try {
-        tourReservationData.lastModifiedBy = req.token_decoded.d
+        hotelData.lastModifiedBy = req.token_decoded.d
         
-            var result = await tourReservationHelper.updateTourReservation(tourReservationData)
-            var message = 'TourReservation Updated successfully'
+            var result = await hotelHelper.updateHotel(hotelData)
+            var message = 'Hotel Updated successfully'
         
 
         responseHelper.success(res, result, message)
@@ -104,20 +104,20 @@ var updateTourReservation = async (req, res) => {
     }
 }
 
-var removeTourReservation = async (req, res) => {
-    console.log("removeTourReservation called")
+var removeHotel = async (req, res) => {
+    console.log("removeHotel called")
     try {
         var role = req.token_decoded.r
 
        
-            var tourReservationData = req.body
-            tourReservationData.lastModifiedBy = req.token_decoded.d
-            var result = await tourReservationHelper.removeTourReservation(tourReservationData)
+            var hotelData = req.body
+            hotelData.lastModifiedBy = req.token_decoded.d
+            var result = await hotelHelper.removeHotel(hotelData)
 
-            var message = "TourReservation removed successfully"
+            var message = "Hotel removed successfully"
 
-            if (result == "TourReservation does not exists.") {
-                message = "TourReservation does not exists."
+            if (result == "Hotel does not exists.") {
+                message = "Hotel does not exists."
             }
             return responseHelper.success(res, result, message)
         
@@ -128,19 +128,19 @@ var removeTourReservation = async (req, res) => {
 
 }
 
-var findTourReservationById = async (req, res) => {
-    console.log("findTourReservationById called")
+var findHotelById = async (req, res) => {
+    console.log("findHotelById called")
     try {
         var role = req.token_decoded.r
 
         
-            var tourReservationData = req.body
+            var hotelData = req.body
 
-            var result = await tourReservationHelper.findTourReservationById(tourReservationData)
+            var result = await hotelHelper.findHotelById(hotelData)
             console.log(result)
-            var message = "TourReservation find successfully"
+            var message = "Hotel find successfully"
             if (result == null) {
-                message = "TourReservation does not exists."
+                message = "Hotel does not exists."
             }
 
 
@@ -157,12 +157,12 @@ var findTourReservationById = async (req, res) => {
 
 
 module.exports = {
-    createTourReservation,
-    getTourReservationsWithFullDetails,
-    getTourReservationsList,
-    updateTourReservation,
-    removeTourReservation,
-    findTourReservationById
+    createHotel,
+    getHotelsWithFullDetails,
+    getHotelsList,
+    updateHotel,
+    removeHotel,
+    findHotelById
 
 }
 
