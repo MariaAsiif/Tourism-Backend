@@ -15,7 +15,7 @@ const tourPlacesRoutes = require('./tourPlaces.route')
 const membershipRoutes = require('./memberships.route')
 const discountRoutes = require('./discounts.route')
 const tourPackageRoutes = require('./tourPackages.route')
-
+const tourReservationRoutes = require('./tourReservations.route')
 
 
 //call appropriate routes
@@ -31,6 +31,7 @@ router.use('/tourPlaces', tourPlacesRoutes)
 router.use('/memberships', membershipRoutes)
 router.use('/discounts', discountRoutes)
 router.use('/tourPackages', tourPackageRoutes)
+router.use('/tourPackages', tourReservationRoutes)
 
 
 module.exports = router
