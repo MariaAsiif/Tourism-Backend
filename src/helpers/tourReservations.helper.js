@@ -32,8 +32,40 @@ module.exports = {
         
         .populate('lastModifiedBy', query.lastModifiedBy)
         .populate('customer', query.customerFields)
-        .populate('tourPackages', query.tourPackagesFields)
         .populate('discount', query.discountFields)
+        .populate({
+            path: 'tourPackages',
+            select: query.tourPackagesFields,
+            populate: [{
+                path: 'tourCategory',
+                model: 'tourCategories',
+                select: query.tourCategoryFields
+            },{
+                path: 'departurePlaces',
+                model: 'tourPlaces',
+                select: query.departurePlacesFields
+            },{
+                path: 'arrivalPlaces',
+                model: 'tourPlaces',
+                select: query.arrivalPlacesFields
+            },{
+                path: 'placesToVisit',
+                model: 'tourPlaces',
+                select: query.placesToVisitFields
+            },{
+                path: 'hotels',
+                model: 'hotels',
+                select: query.hotelsFields
+            },{
+                path: 'additionalServices',
+                model: 'tourServices',
+                select: query.additionalServicesFields
+            },{
+                path: 'tourVehicles',
+                model: 'tourVehicles',
+                select: query.tourVehiclesFields
+            }]
+        })
         .sort({ [sortProperty]: sortOrder })
         .skip(offset)
         .limit(limit);
@@ -53,7 +85,7 @@ module.exports = {
         console.log("getTourReservation Model Function called")
 
         const tourReservations = await TourReservation.find(query.critarion).select(query.fields/* '_id TourReservationName' */)
-        
+        .populate('customer', query.customerFields)
         .sort({ [sortProperty]: sortOrder })
         .skip(offset)
         .limit(limit);
@@ -100,7 +132,40 @@ module.exports = {
         console.log("findTourReservationById HelperFunction is called");
         
         const tourReservation = await TourReservation.findOne(query.critarion)
-        
+        .populate('discount', query.discountFields)
+        .populate({
+            path: 'tourPackages',
+            select: query.tourPackagesFields,
+            populate: [{
+                path: 'tourCategory',
+                model: 'tourCategories',
+                select: query.tourCategoryFields
+            },{
+                path: 'departurePlaces',
+                model: 'tourPlaces',
+                select: query.departurePlacesFields
+            },{
+                path: 'arrivalPlaces',
+                model: 'tourPlaces',
+                select: query.arrivalPlacesFields
+            },{
+                path: 'placesToVisit',
+                model: 'tourPlaces',
+                select: query.placesToVisitFields
+            },{
+                path: 'hotels',
+                model: 'hotels',
+                select: query.hotelsFields
+            },{
+                path: 'additionalServices',
+                model: 'tourServices',
+                select: query.additionalServicesFields
+            },{
+                path: 'tourVehicles',
+                model: 'tourVehicles',
+                select: query.tourVehiclesFields
+            }]
+        })
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)

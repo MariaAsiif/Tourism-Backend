@@ -137,7 +137,7 @@ var findTourReservationById = async (req, res) => {
             var tourReservationData = req.body
 
             var result = await tourReservationHelper.findTourReservationById(tourReservationData)
-            console.log(result)
+            
             var message = "TourReservation find successfully"
             if (result == null) {
                 message = "TourReservation does not exists."
@@ -163,7 +163,6 @@ module.exports = {
     updateTourReservation,
     removeTourReservation,
     findTourReservationById
-
 }
 
 
