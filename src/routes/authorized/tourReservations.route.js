@@ -8,12 +8,12 @@ const permit = require('../../middlewares').permit
 
 const controller = require('../../controllers').tourReservations
 
-router.post('/createTourReservation', permit(['_a']), controller.createTourReservation)
-router.post('/getTourReservationsWithFullDetails', permit(['_a']), controller.getTourReservationsWithFullDetails)
-router.post('/updateTourReservation', permit(['_a']), controller.updateTourReservation)
-router.post('/removeTourReservation', permit(['_a']), controller.removeTourReservation)
-router.post('/getTourReservationsList', permit(['_a']), controller.getTourReservationsList)
-router.post('/findTourReservationById', permit(['_a']), controller.findTourReservationById)
+router.post('/createTourReservation', permit(['_a', '_cst']), controller.createTourReservation)
+router.post('/getTourReservationsWithFullDetails', permit(['_a', '_cst']), controller.getTourReservationsWithFullDetails)
+router.post('/updateTourReservation', permit(['_a', '_cst']), controller.updateTourReservation)
+router.post('/removeTourReservation', permit(['_a', '_cst']), controller.removeTourReservation)
+router.post('/getTourReservationsList', permit(['_a', '_cst']), controller.getTourReservationsList)
+router.post('/findTourReservationById', permit(['_a', '_cst']), controller.findTourReservationById)
 
 
 module.exports = router

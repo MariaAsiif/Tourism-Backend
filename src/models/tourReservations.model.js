@@ -26,7 +26,10 @@ tourReservationsSchema = new Schema({
         type: String,
         ref: 'discounts'
     },
-
+    addedby: {
+        type: String,
+        ref: 'users'
+    },
     lastModifiedBy: {
         type: String,
         ref: 'users'

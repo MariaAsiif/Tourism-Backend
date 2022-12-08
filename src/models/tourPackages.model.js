@@ -6,7 +6,8 @@ mongoose.set('debug', true);
 
 tourPackagesSchema = new Schema({
     tourPackageNumber: {
-        type: Number
+        type: Number,
+        unique: true
     },
     tourPackageName: {
         type: String
@@ -51,6 +52,33 @@ tourPackagesSchema = new Schema({
         type: String,
         ref: 'tourVehicles'
     }],
+    businessOwner: {
+        type: String,
+        ref: 'businessOwners'
+    },
+    tourPackageType: {
+        type: String,
+        enum: ["fixed",
+            "customized"],
+        defualt: "fixed", 
+        required: true
+    },
+    duration: {
+        numberOfDays: {
+            type: Number
+        },
+        dates: [{
+            type: Date
+        }]
+    },
+    groupInfo: {
+        numberOfPeople: {
+            type: Number
+        },
+        groupDescription: {
+            type: String
+        }
+    },
     addedby: {
         type: String,
         ref: 'users'

@@ -37,6 +37,15 @@ var createTourPackage = async (req, res) => {
         
         tourPackageData.addedby = req.token_decoded.d
 
+        if(tourPackageData.tourPackageType === "customized"){
+            if(!tourPackageData.hasOwnProperty("duration")){
+                return responseHelper.requestfailure(res, "If tour is customized then it should have duration property")
+            }
+            if(!tourPackageData.hasOwnProperty("groupInfo")){
+                return responseHelper.requestfailure(res, "If tour is customized then it should have groupInfo property")
+            }
+        }
+
         
             var result = await tourPackageHelper.createTourPackage(tourPackageData)
             var message = "TourPackage created successfully"
@@ -44,8 +53,13 @@ var createTourPackage = async (req, res) => {
         
 
     } catch (err) {
-        logger.error(err)
-        responseHelper.requestfailure(res, err)
+        
+        if(err.code == 11000){
+            responseHelper.requestfailure(res, "Duplicate Tour Package Number is not allowed");    
+        } else {
+        responseHelper.requestfailure(res, err);
+        }
+        
     }
 } //end function
 
@@ -93,6 +107,15 @@ var updateTourPackage = async (req, res) => {
     var role = req.token_decoded.r
     try {
         tourPackageData.lastModifiedBy = req.token_decoded.d
+
+        if(tourPackageData.tourPackageType === "customized"){
+            if(!tourPackageData.hasOwnProperty("duration")){
+                return responseHelper.requestfailure(res, "If tour is customized then it should have duration property")
+            }
+            if(!tourPackageData.hasOwnProperty("groupInfo")){
+                return responseHelper.requestfailure(res, "If tour is customized then it should have groupInfo property")
+            }
+        }
         
             var result = await tourPackageHelper.updateTourPackage(tourPackageData)
             var message = 'TourPackage Updated successfully'
@@ -100,7 +123,11 @@ var updateTourPackage = async (req, res) => {
 
         responseHelper.success(res, result, message)
     } catch (err) {
-        responseHelper.requestfailure(res, err)
+        if(err.code == 11000){
+            responseHelper.requestfailure(res, "Duplicate Tour Package Number is not allowed");    
+        } else {
+        responseHelper.requestfailure(res, err);
+        }
     }
 }
 
