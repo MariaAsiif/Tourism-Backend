@@ -7,6 +7,6 @@ module.exports = {
 		online: 1
 	},
 	platforms: [ 'facebook', 'google', 'email', 'apple'],
-	roles: [ 'superadmin', 'customer'],
-	allRolesPermitted: ['_a', '_cst']
+	roles: [ 'superadmin', 'customer', "businessowner"],
+	allRolesPermitted: ['_a', '_cst', '_bo']
 }

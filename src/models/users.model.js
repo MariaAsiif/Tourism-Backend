@@ -50,7 +50,7 @@ usersSchema = new Schema({
     role: {
         type: String,
         enum: constants.roles,
-        default: constants.roles[0]
+        default: constants.roles[1]
     },
     rolePrivileges: {
         type: String,

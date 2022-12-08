@@ -15,5 +15,6 @@ module.exports = {
   memberships: require('./memberships.controller'),
   discounts: require('./discounts.controller'),
   tourPackages: require('./tourPackages.controller'),
-  tourReservations: require('./tourReservations.controller')
+  tourReservations: require('./tourReservations.controller'),
+  businessOwners : require('./businessOwners.controller')
 }

@@ -247,8 +247,8 @@ module.exports = {
               case 'customer':
                 userrole = '_cst'
               break
-              case 'doctor':
-                userrole = '_doc'
+              case 'businessowner':
+                userrole = '_bo'
               break
             default:
                 userrole = '_a'
@@ -290,22 +290,7 @@ module.exports = {
 
     updateuser: async (data) => {
         console.log("Update User HelperFunction is called");
-        if('first_name' in data){
-            data.first_name = data.first_name.toUpperCase()
-        } 
-
-        if('first_family_name' in data){
-            data.first_family_name = data.first_family_name.toUpperCase()
-        } 
-
-        if('second_family_name' in data){
-            data.second_family_name = data.second_family_name.toUpperCase()
-        } 
-
-        if('third_family_name' in data){
-            data.third_family_name = data.third_family_name.toUpperCase()
-        } 
-
+        
         const result = await User.findOneAndUpdate({_id: data._id}, data, {new: true})
 
         return result;
