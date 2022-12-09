@@ -4,41 +4,22 @@ var Schema = mongoose.Schema;
 
 mongoose.set('debug', true);
 
-membershipsSchema = new Schema({
-    membershipName: {
+taxesSchema = new Schema({
+    taxName: {
         type: String
     },
-    currentPoints: {
+    taxPercentage: {
         type: Number
     },
-    membStartDate: {
-        type: Date
-    },
-    membEndDate: {
-        type: Date
-    },
-    nextRenewalDate: {
-        type: Date
-    },
-    active: {
-        type: Boolean
-    },
-    feePaid: {
-        type: Boolean
-    },
-    membershipType: {
-        type: String
-    },
-    customer: {
+    payStatus: {
         type: String,
-        required: true,
-        ref: 'customers'
+        enum: ["filer",
+        "nonfiler"]
     },
     addedby: {
         type: String,
         ref: 'users'
     },
-
     lastModifiedBy: {
         type: String,
         ref: 'users'
@@ -54,4 +35,4 @@ membershipsSchema = new Schema({
     })
 
 
-module.exports = mongoose.model('memberships', membershipsSchema);
+module.exports = mongoose.model('taxes', taxesSchema);

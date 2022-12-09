@@ -137,7 +137,7 @@ var findHotelById = async (req, res) => {
             var hotelData = req.body
 
             var result = await hotelHelper.findHotelById(hotelData)
-            console.log(result)
+            
             var message = "Hotel find successfully"
             if (result == null) {
                 message = "Hotel does not exists."

@@ -26,9 +26,16 @@ module.exports = {
         console.log("getBusinessOwner Model Function called")
 
         const businessOwners = await BusinessOwner.find(query.critarion)
-       
-        .populate('addedby', query.addedby)
+        .populate('businessOwner', query.businessOwnerFields)
+        .populate('hotels', query.hotelsFields)
+        .populate('tourVehicles', query.tourVehiclesFields)
+        .populate('tourPlaces', query.tourPlacesFields)
+        .populate('tourCategories', query.tourCategoriesFields)
+        .populate('discounts', query.discountsFields)
+        .populate('taxes', query.taxesFields)
         
+        .populate('tourPackages', query.tourPackagesFields)
+        .populate('addedby', query.addedby)        
         .populate('lastModifiedBy', query.lastModifiedBy)
         .sort({ [sortProperty]: sortOrder })
         .skip(offset)
@@ -96,7 +103,15 @@ module.exports = {
         console.log("findBusinessOwnerById HelperFunction is called");
         
         const businessOwner = await BusinessOwner.findOne(query.critarion)
+        .populate('businessOwner', query.businessOwnerFields)
+        .populate('hotels', query.hotelsFields)
+        .populate('tourVehicles', query.tourVehiclesFields)
+        .populate('tourPlaces', query.tourPlacesFields)
+        .populate('tourCategories', query.tourCategoriesFields)
+        .populate('discounts', query.discountsFields)
+        .populate('taxes', query.taxesFields)
         
+        .populate('tourPackages', query.tourPackagesFields)
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)

@@ -31,7 +31,15 @@ module.exports = {
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)
-        .populate('customer', query.customerFields)
+        
+        .populate({
+            path: 'customer',
+            select: query.customerFields,
+            populate: [{
+                path: 'user',
+                model: 'users',
+                select: query.userFields
+            }]})
         .populate('discount', query.discountFields)
         .populate({
             path: 'tourPackages',
@@ -133,6 +141,14 @@ module.exports = {
         
         const tourReservation = await TourReservation.findOne(query.critarion)
         .populate('discount', query.discountFields)
+        .populate({
+            path: 'customer',
+            select: query.customerFields,
+            populate: [{
+                path: 'user',
+                model: 'users',
+                select: query.userFields
+            }]})
         .populate({
             path: 'tourPackages',
             select: query.tourPackagesFields,

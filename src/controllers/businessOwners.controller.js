@@ -137,7 +137,7 @@ var findBusinessOwnerById = async (req, res) => {
             var businessOwnerData = req.body
 
             var result = await businessOwnerHelper.findBusinessOwnerById(businessOwnerData)
-            console.log(result)
+
             var message = "BusinessOwner find successfully"
             if (result == null) {
                 message = "BusinessOwner does not exists."

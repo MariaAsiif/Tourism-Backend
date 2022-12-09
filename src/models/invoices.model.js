@@ -4,36 +4,38 @@ var Schema = mongoose.Schema;
 
 mongoose.set('debug', true);
 
-tourReservationsSchema = new Schema({
+invoicesSchema = new Schema({
+    invoiceNumber: {
+        type: Number
+    },
     customer: {
         type: String,
         ref: 'customers'
     },
-    tourPackages: {
+    tourReservation: {
         type: String,
-        ref: 'tourPackages'
+        ref: 'tourReservations'
     },
-    reservationDate: {
-        type: Date
-    },
-    paymentMade: {
+    amount: {
         type: Number
-    },
-    isPaymentMade: {
-        type: Boolean
     },
     discount: {
         type: String,
         ref: 'discounts'
     },
-    businessOwner: {
+    tax: {
         type: String,
-        ref: 'businessOwners'
+        ref: 'taxes'
+    },
+    invoiceStatus: {
+        type: String,
+        enum: ["due", "paid"]
     },
     addedby: {
         type: String,
         ref: 'users'
     },
+
     lastModifiedBy: {
         type: String,
         ref: 'users'
@@ -49,4 +51,4 @@ tourReservationsSchema = new Schema({
     })
 
 
-module.exports = mongoose.model('tourReservations', tourReservationsSchema);
+module.exports = mongoose.model('invoices', invoicesSchema);

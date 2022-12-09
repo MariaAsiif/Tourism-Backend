@@ -26,8 +26,16 @@ module.exports = {
         console.log("getMembership Model Function called")
 
         const memberships = await Membership.find(query.critarion)
-       
         .populate('addedby', query.addedby)
+        .populate('customer', query.customerFields)
+        .populate({
+            path: 'customer',
+            select: query.customerFields,
+            populate: [{
+                path: 'user',
+                model: 'users',
+                select: query.userFields
+            }]})
         
         .populate('lastModifiedBy', query.lastModifiedBy)
         .sort({ [sortProperty]: sortOrder })
@@ -96,7 +104,14 @@ module.exports = {
         console.log("findMembershipById HelperFunction is called");
         
         const membership = await Membership.findOne(query.critarion)
-        
+        .populate({
+            path: 'customer',
+            select: query.customerFields,
+            populate: [{
+                path: 'user',
+                model: 'users',
+                select: query.userFields
+            }]})
         .populate('addedby', query.addedby)
         
         .populate('lastModifiedBy', query.lastModifiedBy)

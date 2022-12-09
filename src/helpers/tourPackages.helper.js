@@ -53,7 +53,15 @@ module.exports = {
                 select: query.tourCategoryFields
             }
         })
-        
+        .populate({
+            path: 'businessOwner',
+            select: query.businessOwnerFields,
+            populate: {
+                path: 'businessOwner',
+                model: 'users',
+                select: query.userFields
+            }
+        })
         
         .populate('hotels', query.hotelsFields)
         .populate('additionalServices', query.additionalServicesFields)
@@ -154,7 +162,15 @@ module.exports = {
                 select: query.tourCategoryFields
             }
         })
-        
+        .populate({
+            path: 'businessOwner',
+            select: query.businessOwnerFields,
+            populate: {
+                path: 'businessOwner',
+                model: 'users',
+                select: query.userFields
+            }
+        })
         
         .populate('hotels', query.hotelsFields)
         .populate('additionalServices', query.additionalServicesFields)
