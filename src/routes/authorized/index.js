@@ -20,6 +20,8 @@ const businessOwnerRoutes = require('./businessOwners.route')
 const taxRoutes = require('./taxes.route')
 const customerRoutes = require('./customers.route')
 const invoiceRoutes = require('./invoices.route')
+const paymentMethodRoutes = require('./paymentMethods.route')
+const galleryAlbumRoutes = require('./galleryAlbums.route')
 
 
 //call appropriate routes
@@ -40,6 +42,8 @@ router.use('/businessOwners', businessOwnerRoutes)
 router.use('/taxes', taxRoutes)
 router.use('/customers', customerRoutes)
 router.use('/invoices', invoiceRoutes)
+router.use('/paymentMethods', paymentMethodRoutes)
+router.use('/galleryAlbums', galleryAlbumRoutes)
 
 
 module.exports = router

@@ -16,6 +16,8 @@ module.exports = {
   businessOwners: require('./businessOwners.model'),
   taxes: require('./taxes.model'),
   customers: require('./customers.model'),
-  invoices: require('./invoices.model')
+  invoices: require('./invoices.model'),
+  paymentMethods: require('./paymentMethods.model'),
+  galleryAlbums: require('./galleryAlbums.model')
   
 }
