@@ -4,28 +4,15 @@ var Schema = mongoose.Schema;
 
 mongoose.set('debug', true);
 
-galleryAlbumsSchema = new Schema({
-    galleryAlbumName: {
+frontEndModulesSchema = new Schema({
+    frontEndModuleName: {
         type: String
     },
-    galleryImages: [{
-        imageName: {
-            type: String
-        },
-        location: {
-            type: String
-        },
-        imagePath: {
-            type: String
-        },
-        details: {
-            type: String
-        },
-        active: {
-            type: Boolean
-        }
-    }],
-    
+    modulePlateform: {
+        type: String,
+        enum: ['mobile', 'web'],
+        default: 'web'
+    },
     addedby: {
         type: String,
         ref: 'users'
@@ -46,4 +33,4 @@ galleryAlbumsSchema = new Schema({
     })
 
 
-module.exports = mongoose.model('galleryAlbums', galleryAlbumsSchema);
+module.exports = mongoose.model('frontEndModules', frontEndModulesSchema);

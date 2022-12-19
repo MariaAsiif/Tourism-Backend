@@ -16,6 +16,10 @@ rolesSchema = new Schema({
         type: String,
         ref: 'permissions'
     }],
+    frontEndModules: [{
+        type: String,
+        ref: 'frontEndModules'
+    }],
     addedby: {
         type: String,
         ref: 'users'

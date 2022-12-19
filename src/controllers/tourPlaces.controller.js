@@ -19,6 +19,8 @@ const promise = require('bluebird')
 var async = require('async')
 
 const tourPlacesHelper = require('../helpers/tourPlaces.helper')
+const BusinessOwner = mongoose.model('businessOwners')
+
 
 //helper functions
 logger = require("../helpers/logger")
@@ -39,6 +41,11 @@ var createTourPlace = async (req, res) => {
 
         
             var result = await tourPlacesHelper.createTourPlaces(tourPlaceData)
+
+            let tourBusinessOwner = await BusinessOwner.findById(tourPlaceData.businessOwnerId)
+            tourBusinessOwner.tourPlaces.push(result._id)
+            await tourBusinessOwner.save()
+
             var message = "TourPlace created successfully"
             return responseHelper.success(res, result, message)
         
@@ -109,18 +116,24 @@ var removeTourPlace = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-       
-            var tourPlaceData = req.body
-            tourPlaceData.lastModifiedBy = req.token_decoded.d
-            var result = await tourPlacesHelper.removeTourPlaces(tourPlaceData)
 
-            var message = "TourPlace removed successfully"
+        var tourPlaceData = req.body
+        tourPlaceData.lastModifiedBy = req.token_decoded.d
+        var result = await tourPlacesHelper.removeTourPlaces(tourPlaceData)
 
-            if (result == "TourPlace does not exists.") {
-                message = "TourPlace does not exists."
-            }
-            return responseHelper.success(res, result, message)
-        
+
+
+        var message = "TourPlace removed successfully"
+
+        if (result == "TourPlace does not exists.") {
+            message = "TourPlace does not exists."
+        } else {
+            let tourBusinessOwner = await BusinessOwner.findById(tourPlaceData.businessOwnerId)
+            tourBusinessOwner.tourPlaces.splice(tourBusinessOwner.tourPlaces.indexOf(result._id), 1)
+            await tourBusinessOwner.save()
+        }
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }

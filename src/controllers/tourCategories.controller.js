@@ -20,7 +20,7 @@ var async = require('async')
 
 
 const tourCategoriesHelper = require('../helpers/tourCategories.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -40,7 +40,12 @@ var createTourCategories = async (req, res) => {
 
         
             var result = await tourCategoriesHelper.createTourCategories(tourCategoriesData)
-            var message = "TourCategories created successfully"
+
+            let tourBusinessOwner = await BusinessOwner.findById(tourCategoriesData.businessOwnerId)
+            tourBusinessOwner.tourCategories.push(result._id)
+            await tourBusinessOwner.save()
+
+            var message = "Tour Category created successfully"
             return responseHelper.success(res, result, message)
         
 
@@ -110,18 +115,22 @@ var removeTourCategories = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-       
-            var tourCategoriesData = req.body
-            tourCategoriesData.lastModifiedBy = req.token_decoded.d
-            var result = await tourCategoriesHelper.removeTourCategories(tourCategoriesData)
 
-            var message = "TourCategories removed successfully"
+        var tourCategoriesData = req.body
+        tourCategoriesData.lastModifiedBy = req.token_decoded.d
+        var result = await tourCategoriesHelper.removeTourCategories(tourCategoriesData)
 
-            if (result == "TourCategories does not exists.") {
-                message = "TourCategories does not exists."
-            }
-            return responseHelper.success(res, result, message)
-        
+        var message = "TourCategories removed successfully"
+
+        if (result == "TourCategories does not exists.") {
+            message = "TourCategories does not exists."
+        } else {
+            let tourBusinessOwner = await BusinessOwner.findById(tourCategoriesData.businessOwnerId)
+            tourBusinessOwner.tourCategories.splice(tourBusinessOwner.tourCategories.indexOf(result._id), 1)
+            await tourBusinessOwner.save()
+        }
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }

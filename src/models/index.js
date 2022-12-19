@@ -4,6 +4,7 @@ module.exports = {
   ac: require("./ac.model"),  
   permissions: require('./permissions.model'),
   roles: require('./roles.model'),
+  frontEndModules: require('./frontEndModules.model'),
   tourCategories: require('./tourCategories.model'),
   tourServices: require('./tourServices.model'),
   tourVehicles: require('./tourVehicles.model'),

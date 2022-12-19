@@ -7,6 +7,7 @@ const usersRoutes = require('./users.route')
 
 const permissionRoutes = require('./permissions.route')
 const rolesRoutes = require('./roles.route')
+const frontEndModuleRoutes = require('./frontEndModules.route')
 const tourCategoriesRoutes = require('./tourCategories.route')
 const tourServiceRoutes = require('./tourService.route')
 const tourVehicleRoutes = require('./tourVehicles.route')
@@ -44,6 +45,7 @@ router.use('/customers', customerRoutes)
 router.use('/invoices', invoiceRoutes)
 router.use('/paymentMethods', paymentMethodRoutes)
 router.use('/galleryAlbums', galleryAlbumRoutes)
+router.use('/frontEndModules', frontEndModuleRoutes)
 
 
 module.exports = router

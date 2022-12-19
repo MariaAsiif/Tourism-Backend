@@ -7,6 +7,7 @@ module.exports = {
   
   permissions: require('./permission.controller'),
   roles: require('./roles.controller'),
+  frontEndModules: require('./frontEndModules.controller'),
   tourCategories: require('./tourCategories.controller'),
   tourService: require('./tourService.controller'),
   tourVehicles: require('./tourVehicle.controller'),

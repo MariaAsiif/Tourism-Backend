@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const tourServicerHelpter = require('../helpers/tourServices.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -39,6 +39,10 @@ var createTourService = async (req, res) => {
 
         
             var result = await tourServicerHelpter.createTourServices(tourServiceData)
+            let tourBusinessOwner = await BusinessOwner.findById(tourServiceData.businessOwnerId)
+            tourBusinessOwner.additionalServices.push(result._id)
+            await tourBusinessOwner.save()
+
             var message = "TourService created successfully"
             return responseHelper.success(res, result, message)
         
@@ -114,10 +118,17 @@ var removeTourService = async (req, res) => {
             tourServiceData.lastModifiedBy = req.token_decoded.d
             var result = await tourServicerHelpter.removeTourServices(tourServiceData)
 
+            
+
+
             var message = "TourService removed successfully"
 
             if (result == "TourService does not exists.") {
                 message = "TourService does not exists."
+            } else {
+                let tourBusinessOwner = await BusinessOwner.findById(tourServiceData.businessOwnerId)
+            tourBusinessOwner.additionalServices.splice(tourBusinessOwner.additionalServices.indexOf(tourServiceData.id), 1)
+            await tourBusinessOwner.save()
             }
             return responseHelper.success(res, result, message)
         

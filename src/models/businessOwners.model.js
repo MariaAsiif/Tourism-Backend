@@ -48,6 +48,10 @@ businessOwnersSchema = new Schema({
     type: String,
     ref: 'tourPlaces'
   }],
+  additionalServices: [{
+    type: String,
+    ref: 'tourServices'
+  }],
   tourCategories: [{
     type: String,
     ref: 'tourCategories'
@@ -59,6 +63,14 @@ businessOwnersSchema = new Schema({
   taxes: [{
     type: String,
     ref: 'taxes'
+  }],
+  galleryAlbums: [{
+    type: String,
+    ref: 'galleryAlbums'
+  }],
+  memberships: [{
+    type: String,
+    ref: 'memberships'
   }],
   addedby: {
     type: String,
