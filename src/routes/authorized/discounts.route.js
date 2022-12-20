@@ -8,12 +8,12 @@ const permit = require('../../middlewares').permit
 
 const controller = require('../../controllers').discounts
 
-router.post('/createDiscount', permit(['_a']), controller.createDiscount)
-router.post('/getDiscountsWithFullDetails', permit(['_a']), controller.getDiscountsWithFullDetails)
-router.post('/updateDiscount', permit(['_a']), controller.updateDiscount)
-router.post('/removeDiscount', permit(['_a']), controller.removeDiscount)
-router.post('/getDiscountsList', permit(['_a']), controller.getDiscountsList)
-router.post('/findDiscountById', permit(['_a']), controller.findDiscountById)
+router.post('/createDiscount', permit(['_a', '_bo']), controller.createDiscount)
+router.post('/getDiscountsWithFullDetails', permit(['_a', '_bo']), controller.getDiscountsWithFullDetails)
+router.post('/updateDiscount', permit(['_a', '_bo']), controller.updateDiscount)
+router.post('/removeDiscount', permit(['_a', '_bo']), controller.removeDiscount)
+router.post('/getDiscountsList', permit(['_a', '_bo']), controller.getDiscountsList)
+router.post('/findDiscountById', permit(['_a', '_bo']), controller.findDiscountById)
 
 
 module.exports = router

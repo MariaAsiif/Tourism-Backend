@@ -31,7 +31,6 @@ membershipsSchema = new Schema({
     },
     customer: {
         type: String,
-        required: true,
         ref: 'customers'
     },
     addedby: {

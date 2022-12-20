@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const tourVehicleHelpter = require('../helpers/tourVehicles.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -39,6 +39,10 @@ var createTourVehicle = async (req, res) => {
 
         
             var result = await tourVehicleHelpter.createTourVehicles(tourVehicleData)
+
+            let tourBusinessOwner = await BusinessOwner.findById(tourVehicleData.businessOwnerId)
+            tourBusinessOwner.tourVehicles.push(result._id)
+            await tourBusinessOwner.save()
             var message = "TourVehicle created successfully"
             return responseHelper.success(res, result, message)
         
@@ -118,6 +122,10 @@ var removeTourVehicle = async (req, res) => {
 
             if (result == "TourVehicle does not exists.") {
                 message = "TourVehicle does not exists."
+            }else {
+                let tourBusinessOwner = await BusinessOwner.findById(tourVehicleData.businessOwnerId)
+                tourBusinessOwner.tourVehicles.splice(tourBusinessOwner.tourVehicles.indexOf(tourVehicleData.id), 1)
+                await tourBusinessOwner.save()
             }
             return responseHelper.success(res, result, message)
         

@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const didcountHelper = require('../helpers/discounts.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -34,14 +34,17 @@ var createDiscount = async (req, res) => {
     console.log('createDiscount')
     try {
         var discountData = req.body
-        
+
         discountData.addedby = req.token_decoded.d
 
-        
-            var result = await didcountHelper.createDiscount(discountData)
-            var message = "Discount created successfully"
-            return responseHelper.success(res, result, message)
-        
+
+        var result = await didcountHelper.createDiscount(discountData)
+        let tourBusinessOwner = await BusinessOwner.findById(discountData.businessOwnerId)
+        tourBusinessOwner.discounts.push(result._id)
+        await tourBusinessOwner.save()
+        var message = "Discount created successfully"
+        return responseHelper.success(res, result, message)
+
 
     } catch (err) {
         logger.error(err)
@@ -93,10 +96,10 @@ var updateDiscount = async (req, res) => {
     var role = req.token_decoded.r
     try {
         discountData.lastModifiedBy = req.token_decoded.d
-        
-            var result = await didcountHelper.updateDiscount(discountData)
-            var message = 'Discount Updated successfully'
-        
+
+        var result = await didcountHelper.updateDiscount(discountData)
+        var message = 'Discount Updated successfully'
+
 
         responseHelper.success(res, result, message)
     } catch (err) {
@@ -109,18 +112,22 @@ var removeDiscount = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-       
-            var discountData = req.body
-            discountData.lastModifiedBy = req.token_decoded.d
-            var result = await didcountHelper.removeDiscount(discountData)
 
-            var message = "Discount removed successfully"
+        var discountData = req.body
+        discountData.lastModifiedBy = req.token_decoded.d
+        var result = await didcountHelper.removeDiscount(discountData)
 
-            if (result == "Discount does not exists.") {
-                message = "Discount does not exists."
-            }
-            return responseHelper.success(res, result, message)
-        
+        var message = "Discount removed successfully"
+
+        if (result == "Discount does not exists.") {
+            message = "Discount does not exists."
+        } else {
+            let tourBusinessOwner = await BusinessOwner.findById(discountData.businessOwnerId)
+            tourBusinessOwner.discounts.splice(tourBusinessOwner.discounts.indexOf(discountData.id), 1)
+            await tourBusinessOwner.save()
+        }
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }
@@ -133,19 +140,19 @@ var findDiscountById = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-        
-            var discountData = req.body
 
-            var result = await didcountHelper.findDiscountById(discountData)
-            console.log(result)
-            var message = "Discount find successfully"
-            if (result == null) {
-                message = "Discount does not exists."
-            }
+        var discountData = req.body
+
+        var result = await didcountHelper.findDiscountById(discountData)
+        console.log(result)
+        var message = "Discount find successfully"
+        if (result == null) {
+            message = "Discount does not exists."
+        }
 
 
-            return responseHelper.success(res, result, message)
-        
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }

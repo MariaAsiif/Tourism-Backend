@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const taxHelper = require('../helpers/taxes.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -39,6 +39,9 @@ var createTax = async (req, res) => {
 
         
             var result = await taxHelper.createTax(taxData)
+            let tourBusinessOwner = await BusinessOwner.findById(taxData.businessOwnerId)
+            tourBusinessOwner.taxes.push(result._id)
+            await tourBusinessOwner.save()
             var message = "Tax created successfully"
             return responseHelper.success(res, result, message)
         
@@ -109,18 +112,22 @@ var removeTax = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-       
-            var taxData = req.body
-            taxData.lastModifiedBy = req.token_decoded.d
-            var result = await taxHelper.removeTax(taxData)
 
-            var message = "Tax removed successfully"
+        var taxData = req.body
+        taxData.lastModifiedBy = req.token_decoded.d
+        var result = await taxHelper.removeTax(taxData)
 
-            if (result == "Tax does not exists.") {
-                message = "Tax does not exists."
-            }
-            return responseHelper.success(res, result, message)
-        
+        var message = "Tax removed successfully"
+
+        if (result == "Tax does not exists.") {
+            message = "Tax does not exists."
+        } else {
+            let tourBusinessOwner = await BusinessOwner.findById(taxData.businessOwnerId)
+            tourBusinessOwner.taxes.splice(tourBusinessOwner.taxes.indexOf(taxData.id), 1)
+            await tourBusinessOwner.save()
+        }
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }

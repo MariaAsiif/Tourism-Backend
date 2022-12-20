@@ -20,7 +20,7 @@ var async = require('async')
 
 
 const membershipHelper = require('../helpers/memberships.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -35,14 +35,17 @@ var createMembership = async (req, res) => {
     console.log('createMembership')
     try {
         var membershipData = req.body
-        
+
         membershipData.addedby = req.token_decoded.d
 
-        
-            var result = await membershipHelper.createMembership(membershipData)
-            var message = "Membership created successfully"
-            return responseHelper.success(res, result, message)
-        
+
+        var result = await membershipHelper.createMembership(membershipData)
+        let tourBusinessOwner = await BusinessOwner.findById(membershipData.businessOwnerId)
+        tourBusinessOwner.memberships.push(result._id)
+        await tourBusinessOwner.save()
+        var message = "Membership created successfully"
+        return responseHelper.success(res, result, message)
+
 
     } catch (err) {
         logger.error(err)
@@ -94,10 +97,10 @@ var updateMembership = async (req, res) => {
     var role = req.token_decoded.r
     try {
         membershipData.lastModifiedBy = req.token_decoded.d
-        
-            var result = await membershipHelper.updateMembership(membershipData)
-            var message = 'Membership Updated successfully'
-        
+
+        var result = await membershipHelper.updateMembership(membershipData)
+        var message = 'Membership Updated successfully'
+
 
         responseHelper.success(res, result, message)
     } catch (err) {
@@ -110,18 +113,22 @@ var removeMembership = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-       
-            var membershipData = req.body
-            membershipData.lastModifiedBy = req.token_decoded.d
-            var result = await membershipHelper.removeMembership(membershipData)
 
-            var message = "Membership removed successfully"
+        var membershipData = req.body
+        membershipData.lastModifiedBy = req.token_decoded.d
+        var result = await membershipHelper.removeMembership(membershipData)
 
-            if (result == "Membership does not exists.") {
-                message = "Membership does not exists."
-            }
-            return responseHelper.success(res, result, message)
-        
+        var message = "Membership removed successfully"
+
+        if (result == "Membership does not exists.") {
+            message = "Membership does not exists."
+        } else {
+            let tourBusinessOwner = await BusinessOwner.findById(membershipData.businessOwnerId)
+            tourBusinessOwner.memberships.splice(tourBusinessOwner.memberships.indexOf(membershipData.id), 1)
+            await tourBusinessOwner.save()
+        }
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }
@@ -134,19 +141,19 @@ var findMembershipById = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-        
-            var membershipData = req.body
 
-            var result = await membershipHelper.findMembershipById(membershipData)
-            console.log(result)
-            var message = "Membership find successfully"
-            if (result == null) {
-                message = "Membership does not exists."
-            }
+        var membershipData = req.body
+
+        var result = await membershipHelper.findMembershipById(membershipData)
+        console.log(result)
+        var message = "Membership find successfully"
+        if (result == null) {
+            message = "Membership does not exists."
+        }
 
 
-            return responseHelper.success(res, result, message)
-        
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }

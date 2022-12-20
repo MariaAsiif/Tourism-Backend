@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const tourPackageHelper = require('../helpers/tourPackages.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -48,6 +48,10 @@ var createTourPackage = async (req, res) => {
 
         
             var result = await tourPackageHelper.createTourPackage(tourPackageData)
+
+            let tourBusinessOwner = await BusinessOwner.findById(tourPackageData.businessOwnerId)
+            tourBusinessOwner.tourPackages.push(result._id)
+            await tourBusinessOwner.save()
             var message = "TourPackage created successfully"
             return responseHelper.success(res, result, message)
         
@@ -136,18 +140,22 @@ var removeTourPackage = async (req, res) => {
     try {
         var role = req.token_decoded.r
 
-       
-            var tourPackageData = req.body
-            tourPackageData.lastModifiedBy = req.token_decoded.d
-            var result = await tourPackageHelper.removeTourPackage(tourPackageData)
 
-            var message = "TourPackage removed successfully"
+        var tourPackageData = req.body
+        tourPackageData.lastModifiedBy = req.token_decoded.d
+        var result = await tourPackageHelper.removeTourPackage(tourPackageData)
 
-            if (result == "TourPackage does not exists.") {
-                message = "TourPackage does not exists."
-            }
-            return responseHelper.success(res, result, message)
-        
+        var message = "TourPackage removed successfully"
+
+        if (result == "TourPackage does not exists.") {
+            message = "TourPackage does not exists."
+        } else {
+            let tourBusinessOwner = await BusinessOwner.findById(tourPackageData.businessOwnerId)
+            tourBusinessOwner.tourPackages.splice(tourBusinessOwner.tourPackages.indexOf(tourPackageData.id), 1)
+            await tourBusinessOwner.save()
+        }
+        return responseHelper.success(res, result, message)
+
     } catch (err) {
         responseHelper.requestfailure(res, err)
     }

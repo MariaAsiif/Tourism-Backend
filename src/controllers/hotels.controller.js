@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const hotelHelper = require('../helpers/hotels.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -39,6 +39,9 @@ var createHotel = async (req, res) => {
 
         
             var result = await hotelHelper.createHotel(hotelData)
+            let tourBusinessOwner = await BusinessOwner.findById(hotelData.businessOwnerId)
+            tourBusinessOwner.hotels.push(result._id)
+            await tourBusinessOwner.save()
             var message = "Hotel created successfully"
             return responseHelper.success(res, result, message)
         
@@ -118,6 +121,10 @@ var removeHotel = async (req, res) => {
 
             if (result == "Hotel does not exists.") {
                 message = "Hotel does not exists."
+            } else {
+                let tourBusinessOwner = await BusinessOwner.findById(hotelData.businessOwnerId)
+            tourBusinessOwner.hotels.splice(tourBusinessOwner.hotels.indexOf(hotelData.id), 1)
+            await tourBusinessOwner.save()
             }
             return responseHelper.success(res, result, message)
         

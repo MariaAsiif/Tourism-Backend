@@ -19,7 +19,7 @@ const promise = require('bluebird')
 var async = require('async')
 
 const galleryAlbumsHelper = require('../helpers/galleryAlbums.helper')
-
+const BusinessOwner = mongoose.model('businessOwners')
 //helper functions
 logger = require("../helpers/logger")
 
@@ -39,6 +39,9 @@ var createGalleryAlbum = async (req, res) => {
 
         
             var result = await galleryAlbumsHelper.createGalleryAlbum(gallerAlbumData)
+            let tourBusinessOwner = await BusinessOwner.findById(gallerAlbumData.businessOwnerId)
+            tourBusinessOwner.galleryAlbums.push(result._id)
+            await tourBusinessOwner.save()
             var message = "GalleryAlbum created successfully"
             return responseHelper.success(res, result, message)
         
@@ -118,6 +121,10 @@ var removeGalleryAlbum = async (req, res) => {
 
             if (result == "GalleryAlbum does not exists.") {
                 message = "GalleryAlbum does not exists."
+            } else {
+                let tourBusinessOwner = await BusinessOwner.findById(gallerAlbumData.businessOwnerId)
+            tourBusinessOwner.galleryAlbums.splice(tourBusinessOwner.galleryAlbums.indexOf(gallerAlbumData.id), 1)
+            await tourBusinessOwner.save()
             }
             return responseHelper.success(res, result, message)
         
